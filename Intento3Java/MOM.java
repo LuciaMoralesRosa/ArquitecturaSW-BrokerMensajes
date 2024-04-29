@@ -2,11 +2,10 @@ package Intento3Java;
 
 import java.rmi.RemoteException;
 import java.sql.Time;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Timer;
@@ -19,9 +18,9 @@ public class MOM implements MOMInterface{
 	private Time tiempo;
 
 	//Atributos privados de la clase
-	private Map<String, Queue<Msj>> listaColas;
+	private static Map<String, Queue<Msj>> listaColas;
 	private Map<String, String> listaInvocadores;
-	private Map<String, Queue<ObjConsumidor>> listaConsumidoresCola;
+	private static Map<String, Queue<ObjConsumidor>> listaConsumidoresCola;
 
 	MOM(){
 		listaColas = new HashMap<String, Queue<Msj>>();
@@ -96,14 +95,23 @@ public class MOM implements MOMInterface{
 	/*
 	 * Comprueba que el invocador existe y ha declarado la cola dada
 	 */
-	private Boolean elInvocadorHaDeclaradoLaCola(String nombrePublicador, String nombreCola){
+	private Boolean elInvocadorHaDeclaradoLaCola(String nombrePublicador, String nombreCola) {
 		Boolean res = false;
 		Boolean invocadorExistente = elInvocadorExiste(nombrePublicador);
-		if(invocadorExistente){
+		if (invocadorExistente) {
 			String nombreColaDeclarada = listaInvocadores.get(nombrePublicador);
-			res = nombreColaDeclarada.equals(nombreCola);	
+			res = nombreColaDeclarada.equals(nombreCola);
 		}
 		return res;
+	}
+
+	private Boolean consumidorEnCola(Queue<ObjConsumidor> consumidores, String nombreConsumidor) {
+		for (ObjConsumidor consumidor : consumidores) {
+			if (consumidor.getNombreConsumidor().equals(nombreConsumidor)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	// Metodos publicos de la clase
@@ -164,46 +172,68 @@ public class MOM implements MOMInterface{
 	public void consumir(String nombreConsumidor, Callback metodoCallback, String nombreCola) throws RemoteException {
 		//Comprobar si existe la cola con el nombre dado
 		Boolean colaExiste = laColaExiste(nombreCola);
-				
-		if(colaExiste){
+
+		if (colaExiste) {
 			// Comprobar si el publicador existe y ha declarado la cola
 			Boolean colaDeclaradaPorConsumidor = elInvocadorHaDeclaradoLaCola(nombreConsumidor, nombreCola);
-			if(colaDeclaradaPorConsumidor){
+			if (colaDeclaradaPorConsumidor) {
 				// Creamos un objeto consumidor y guardamos su funcion de callback
 				ObjConsumidor consumidor = new ObjConsumidor(nombreConsumidor, metodoCallback);
-				
+
 				// Comprobamos si la cola ya tiene una lista de consumidores
 				Boolean laColaTieneConsumidores = listaConsumidoresCola.containsKey(nombreCola);
 
-				if(laColaTieneConsumidores){
+				if (laColaTieneConsumidores) {
+					// Si la cola ya tiene consumidores comprobamos que no está ya el consumidor
+					Queue<ObjConsumidor> consumidores = listaConsumidoresCola.get(nombreCola);
 
+					// Comprobamos si el consumidor esta en la cola
+					Boolean consumidorEnCola = consumidorEnCola(consumidores, nombreConsumidor);
+					if (consumidorEnCola) {
+						System.out.println("[+] El consumidor ya esta en la lista de consumidores de la cola");
+					} else {
+						// Si no está ya en la lista lo añadimos al final
+						consumidores.add(consumidor);
+						System.out.println("[+] Se ha añadido el consumidor a la lista de consumidores de la cola");
+					}
+				} else {
+					// Si no tiene consumidores se declara una cola
+					Queue<ObjConsumidor> listaConsumidores = new LinkedList<ObjConsumidor>();
+					// Añadimos el consumidor a la cola
+					listaConsumidores.add(consumidor);
+					// Añadimos el par <nombreCola, listaConsumidores> al mapa
+					listaConsumidoresCola.put(nombreCola, listaConsumidores);
+					System.out.println(
+							"[+] Se ha creado la lista de consumidores de la cola y se ha añadido a ella el consumidor");
 				}
-				else{
-					List<ObjConsumidor> listaConsumidores = new ArrayList<ObjConsumidor>();
+			}
+		}
+	}
+	
+	public static void main(String[] args) {
+		Set<Entry<String, Queue<Msj>>> setListaColas;
+		while (true) {
+			setListaColas = listaColas.entrySet();
+			for(Entry<String, Queue<Msj>> entrada : setListaColas){
+				String nombreCola = entrada.getKey();
+				Queue<Msj> colaDeMensajas = entrada.getValue();
 
+				if (!colaDeMensajas.isEmpty()) {
+					// Obtener primer consumidor de la cola "nombreCola"
+					Queue<ObjConsumidor> listaConsumidores = listaConsumidoresCola.get(nombreCola);
+					ObjConsumidor primerConsumidor = listaConsumidores.poll();
+					// Devolvemos el consumidor a la cola en la ultima posicion
+					listaConsumidores.add(primerConsumidor);
+
+					// Obtener mensaje a enviar y borrarlo de la cola
+					Msj msj = colaDeMensajas.poll();
+					String mensajeAEnviar = msj.getMensaje();
+
+					// Enviar el mensaje
+					primerConsumidor.metodoCallback.ejecutarMsj(mensajeAEnviar);
 				}
-
-				// Añadimos el consumidor a la cola
 			}
-		
-		
-		
-		
-		if(colaExiste && consumidorSuscrito){
-			// Comprobar que el consumidor dado esta suscrito a la cola dada
-			String colaConsumidorSuscrito = listaInvocadores.get(consumidorSuscrito);
-			Boolean haDeclaradoLaCola = colaConsumidorSuscrito.equals(nombreCola);
-
-			// Si está suscrito a la cola, obtiene el mensaje de mayor prioridad
-			if(haDeclaradoLaCola){
-				Queue<Msj> listaMensajes = listaColas.get(nombreCola);
-				Msj mensaje = listaMensajes.poll();
-				moduloCallback.ejecutarMsj(mensaje.getMensaje());
-			}
-			else{
-				System.out.println("[+] El consumidor no esta suscrito a la cola dada");
-			}
-		}		
+		}
 	}
 
 	
