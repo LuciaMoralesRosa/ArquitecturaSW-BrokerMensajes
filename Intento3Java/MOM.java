@@ -45,10 +45,10 @@ public class MOM extends UnicastRemoteObject implements MOMInterface {
 		// Vaciamos la cola y añadimos los elementos en orden de prioridad en la
 		// auxiliar
 		while (!cola.isEmpty()) {
-			Msj mayorObjeto = null;
-			Integer prioridadMayor = 0;
+			Msj mayorObjeto = cola.peek();
+			Integer prioridadMayor = mayorObjeto.getPrioridad();
 			for (Msj objeto : cola) {
-				if (objeto.getPrioridad() > prioridadMayor) {
+				if (objeto.getPrioridad() < prioridadMayor) {
 					prioridadMayor = objeto.getPrioridad();
 					mayorObjeto = objeto;
 				}
@@ -56,9 +56,8 @@ public class MOM extends UnicastRemoteObject implements MOMInterface {
 			colaAuxiliar.add(mayorObjeto);
 			cola.remove(mayorObjeto);
 		}
-
 		// Devolvemos los elementos a la cola original
-		cola.addAll(colaAuxiliar);
+		cola = colaAuxiliar;
 	}
 
 	private void eliminarCaducadas() {
@@ -114,7 +113,7 @@ public class MOM extends UnicastRemoteObject implements MOMInterface {
 		return false;
 	}
 
-	public void contenidoDelWhile() {
+	public synchronized void contenidoDelWhile() {
 		Set<Entry<String, Queue<Msj>>> setListaColas = listaColas.entrySet();
 		for (Entry<String, Queue<Msj>> entrada : setListaColas) {
 			String nombreCola = entrada.getKey();
@@ -140,7 +139,7 @@ public class MOM extends UnicastRemoteObject implements MOMInterface {
 	// Metodos publicos de la clase
 
 	@Override
-	public void declararCola(String nombreCola, String invocador) throws RemoteException {
+	public synchronized void declararCola(String nombreCola, String invocador) throws RemoteException {
 		// Comprobamos si el invocador ya ha declarado una cola previamente
 		Boolean invocadorTieneColaDeclarada = elInvocadorExiste(invocador);
 		if (invocadorTieneColaDeclarada) {
@@ -162,7 +161,7 @@ public class MOM extends UnicastRemoteObject implements MOMInterface {
 	}
 
 	@Override
-	public void publicar(String nombrePublicador, String nombreCola, String mensaje, Integer prioridad)
+	public synchronized void publicar(String nombrePublicador, String nombreCola, String mensaje, Integer prioridad)
 			throws RemoteException {
 		// Comprobar si existe la cola con el nombre dado
 		Boolean colaExiste = laColaExiste(nombreCola);
@@ -171,13 +170,12 @@ public class MOM extends UnicastRemoteObject implements MOMInterface {
 			// Comprobar si el publicador existe y ha declarado la cola
 			Boolean colaDeclaradaPorPublicador = elInvocadorHaDeclaradoLaCola(nombrePublicador, nombreCola);
 			if (colaDeclaradaPorPublicador) {
-				// Obtener la cola destino
-				Queue<Msj> colaDestino = listaColas.get(nombreCola);
 				// Creacion del mensaje a insertar e insercion en la cola
 				Msj msj = new Msj(prioridad, tiempo.getTime(), mensaje);
-				colaDestino.add(msj);
+				// Añadir mensaje a la cola de mensajes
+				listaColas.get(nombreCola).add(msj);
 				// Ordenar la cola segun las prioridades de los mensajes
-				ordenarColaMensajes(colaDestino);
+				ordenarColaMensajes(listaColas.get(nombreCola));
 			} else {
 				System.out.println("[+] La cola especificada no ha sido declarada por el publicador");
 				System.out.println("[+] El mensaje se ha perdido");
@@ -189,7 +187,7 @@ public class MOM extends UnicastRemoteObject implements MOMInterface {
 	}
 
 	@Override
-	public void consumir(String nombreConsumidor, Callback metodoCallback, String nombreCola) throws RemoteException {
+	public synchronized void consumir(String nombreConsumidor, Callback metodoCallback, String nombreCola) throws RemoteException {
 		// Comprobar si existe la cola con el nombre dado
 		Boolean colaExiste = laColaExiste(nombreCola);
 
