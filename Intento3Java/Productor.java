@@ -50,7 +50,7 @@ public class Productor extends UnicastRemoteObject{
         System.out.println("[+] Se ha enviado el mensaje a la cola\n");
     }
 
-    public static void main(String[] args, String miNombre) {
+    public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
 		String nombreProductor = "/MiProductor7781";
 		String respuesta;

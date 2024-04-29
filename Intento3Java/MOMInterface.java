@@ -20,10 +20,11 @@ import java.rmi.RemoteException;
     // Métodos de la interfaz remota
 
     //declararCola
-    public void declararCola(String nombreCola, String invocador);
+    public void declararCola(String nombreCola, String invocador) throws RemoteException;
 
     //publicar
-    public void publicar(String nombrePublicador, String nombreCola, String mensaje, Integer prioridad);
+    public void publicar(String nombrePublicador, String nombreCola, String mensaje, Integer prioridad) 
+            throws RemoteException;
 
     //consumir
     public void consumir(String nombreConsumidor, Callback metodoCallback, String nombreCola) throws RemoteException;

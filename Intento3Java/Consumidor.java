@@ -46,7 +46,7 @@ public class Consumidor extends UnicastRemoteObject {
 	}
 
 
-	public static void main(String[] args, String miNombre) {
+	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
 		String nombreConsumidor = "/MiConsumidor7781";
 		String respuesta;
