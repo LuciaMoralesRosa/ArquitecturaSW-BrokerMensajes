@@ -1,5 +1,6 @@
 package Intento3Java;
 
+import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.sql.Time;
 import java.util.HashMap;
@@ -7,6 +8,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Queue;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -212,6 +214,29 @@ public class MOM implements MOMInterface{
 	
 	public static void main(String[] args) {
 		Set<Entry<String, Queue<Msj>>> setListaColas;
+
+		Scanner scanner = new Scanner(System.in);
+		// Fijar el directorio donde se encuentra el java.policy
+		// El segundo argumento es la ruta al java.policy
+		System.setProperty("java.security.policy", "./java.policy");
+
+		// Crear administrador de seguridad
+		System.setSecurityManager(new SecurityManager());
+
+		try {
+			String host = "155.210.154.";
+			System.out.print("Complete su IP 155.210.154.XXX:xxxxx: ");
+			host = host + scanner.nextLine();
+			//host = host + "200:32009";
+
+			MOM objeto = new MOM();
+			Naming.rebind("//" + host + "/MiMOM_7781", objeto);
+			System.out.println("[ + ] Se ha registrado el objeto remoto");
+
+		} catch (Exception ex) {
+			System.out.println(ex);
+		}
+
 		while (true) {
 			setListaColas = listaColas.entrySet();
 			for(Entry<String, Queue<Msj>> entrada : setListaColas){
