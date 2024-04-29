@@ -1,5 +1,3 @@
-package Intento3Java;
-
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -28,7 +26,6 @@ public class Productor extends UnicastRemoteObject{
 	}
 
     private static void declararCola(Scanner scanner, MOMInterface mom) throws RemoteException {
-
         System.out.println("Escriba el nombre de la cola que quiere declarar:  ");
         String nombreCola = scanner.nextLine();
         mom.declararCola(nombreCola, miNombre);

@@ -1,6 +1,3 @@
-package Intento3Java;
-
-import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.Time;
@@ -9,7 +6,6 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Queue;
-import java.util.Scanner;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -22,7 +18,7 @@ public class MOM extends UnicastRemoteObject implements MOMInterface {
 
 	// Atributos privados de la clase
 	private static Map<String, Queue<Msj>> listaColas;
-	private Map<String, String> listaInvocadores;
+	private static Map<String, String> listaInvocadores;
 	private static Map<String, Queue<ObjConsumidor>> listaConsumidoresCola;
 
 	MOM() throws RemoteException {
@@ -118,6 +114,29 @@ public class MOM extends UnicastRemoteObject implements MOMInterface {
 		return false;
 	}
 
+	public void contenidoDelWhile() {
+		Set<Entry<String, Queue<Msj>>> setListaColas = listaColas.entrySet();
+		for (Entry<String, Queue<Msj>> entrada : setListaColas) {
+			String nombreCola = entrada.getKey();
+			Queue<Msj> colaDeMensajas = entrada.getValue();
+
+			if (!colaDeMensajas.isEmpty()) {
+				// Obtener primer consumidor de la cola "nombreCola"
+				Queue<ObjConsumidor> listaConsumidores = listaConsumidoresCola.get(nombreCola);
+				ObjConsumidor primerConsumidor = listaConsumidores.poll();
+				// Devolvemos el consumidor a la cola en la ultima posicion
+				listaConsumidores.add(primerConsumidor);
+
+				// Obtener mensaje a enviar y borrarlo de la cola
+				Msj msj = colaDeMensajas.poll();
+				String mensajeAEnviar = msj.getMensaje();
+
+				// Enviar el mensaje
+				primerConsumidor.metodoCallback.ejecutarMsj(mensajeAEnviar);
+			}
+		}
+	}
+
 	// Metodos publicos de la clase
 
 	@Override
@@ -211,7 +230,7 @@ public class MOM extends UnicastRemoteObject implements MOMInterface {
 		}
 	}
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		Set<Entry<String, Queue<Msj>>> setListaColas;
 
 		Scanner scanner = new Scanner(System.in);
@@ -261,6 +280,6 @@ public class MOM extends UnicastRemoteObject implements MOMInterface {
 				}
 			}
 		}
-	}
+	}*/
 
 }

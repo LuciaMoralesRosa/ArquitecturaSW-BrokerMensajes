@@ -1,5 +1,3 @@
-package Intento3Java;
-
 public class Msj {
 	Integer prioridad;
 	long caducidad;

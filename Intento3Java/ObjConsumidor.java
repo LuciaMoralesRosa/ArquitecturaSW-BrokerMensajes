@@ -1,5 +1,3 @@
-package Intento3Java;
-
 public class ObjConsumidor {
 	String nombreConsumidor;
 	Callback metodoCallback;
