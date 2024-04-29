@@ -114,24 +114,17 @@ public class MOM extends UnicastRemoteObject implements MOMInterface {
 	}
 
 	public synchronized void contenidoDelWhile() {
-		Set<Entry<String, Queue<Msj>>> setListaColas = listaColas.entrySet();
-		for (Entry<String, Queue<Msj>> entrada : setListaColas) {
-			String nombreCola = entrada.getKey();
-			Queue<Msj> colaDeMensajas = entrada.getValue();
-
-			if (!colaDeMensajas.isEmpty()) {
+		for (Entry<String, Queue<Msj>> entrada : listaColas.entrySet()) {
+			// Comprobar si la cola esta vacia
+			if (!entrada.getValue().isEmpty() && !listaConsumidoresCola.get(entrada.getKey()).isEmpty()) {
 				// Obtener primer consumidor de la cola "nombreCola"
-				Queue<ObjConsumidor> listaConsumidores = listaConsumidoresCola.get(nombreCola);
-				ObjConsumidor primerConsumidor = listaConsumidores.poll();
-				// Devolvemos el consumidor a la cola en la ultima posicion
-				listaConsumidores.add(primerConsumidor);
-
+				ObjConsumidor primerConsumidor = listaConsumidoresCola.get(entrada.getKey()).poll();
 				// Obtener mensaje a enviar y borrarlo de la cola
-				Msj msj = colaDeMensajas.poll();
-				String mensajeAEnviar = msj.getMensaje();
-
+				Msj msj = entrada.getValue().poll();
 				// Enviar el mensaje
-				primerConsumidor.metodoCallback.ejecutarMsj(mensajeAEnviar);
+				primerConsumidor.metodoCallback.ejecutarMsj(msj.getMensaje());
+				// Devolvemos el consumidor a la cola en la ultima posicion
+				listaConsumidoresCola.get(entrada.getKey()).add(primerConsumidor);
 			}
 		}
 	}

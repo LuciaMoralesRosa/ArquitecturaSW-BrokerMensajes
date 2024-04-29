@@ -40,7 +40,7 @@ public class Consumidor extends UnicastRemoteObject {
 		System.out.println("Escriba el nombre de la cola que quiere consumir:  ");
 		String nombreCola = scanner.nextLine();
 		mom.consumir(miNombre, moduloCallback, nombreCola);
-		System.out.println("[+] Se esta consumiendo la cola" + nombreCola + "\n");
+		System.out.println("[+] Se esta consumiendo la cola " + nombreCola + "\n");
 	}
 
 
