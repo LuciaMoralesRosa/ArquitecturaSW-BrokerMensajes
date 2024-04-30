@@ -177,7 +177,13 @@ public class MOM extends UnicastRemoteObject implements MOMInterface {
 	}
 
 	// Metodos publicos de la clase
-
+/**
+ * Método para declarar una cola.
+ *
+ * @param nombreCola  Nombre de la cola a declarar.
+ * @param invocador    Nombre del invocador que declara la cola.
+ * @throws RemoteException Si ocurre un error de red.
+ */
 	@Override
 	public synchronized void declararCola(String nombreCola, String invocador) throws RemoteException {
 		// Comprobamos si el invocador ya ha declarado una cola previamente
@@ -200,6 +206,15 @@ public class MOM extends UnicastRemoteObject implements MOMInterface {
 		}
 	}
 
+/**
+ * Método para publicar un mensaje en una cola.
+ *
+ * @param nombrePublicador Nombre del publicador del mensaje.
+ * @param nombreCola       Nombre de la cola donde se publica el mensaje.
+ * @param mensaje          Mensaje a publicar.
+ * @param prioridad        Prioridad del mensaje.
+ * @throws RemoteException Si ocurre un error de red.
+ */
 	@Override
 	public synchronized void publicar(String nombrePublicador, String nombreCola, String mensaje, Integer prioridad)
 			throws RemoteException {
@@ -226,6 +241,14 @@ public class MOM extends UnicastRemoteObject implements MOMInterface {
 		}
 	}
 
+/**
+ * Método para consumir mensajes de una cola.
+ *
+ * @param nombreConsumidor Nombre del consumidor.
+ * @param metodoCallback   Callback que se ejecutará al recibir un mensaje.
+ * @param nombreCola       Nombre de la cola de la que se consumen los mensajes.
+ * @throws RemoteException Si ocurre un error de red.
+ */
 	@Override
 	public synchronized void consumir(String nombreConsumidor, Callback metodoCallback, String nombreCola) throws RemoteException {
 		// Comprobar si existe la cola con el nombre dado
