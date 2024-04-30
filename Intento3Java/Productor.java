@@ -3,6 +3,13 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
 
+/*******************************************************************************
+ * Autores: Lizer Bernad Ferrando, 779035
+ * Lucia Morales Rosa, 816906
+ * 
+ * Fichero: Productor.java
+ * Comentarios: Implementa el productor. ******************************************************************************/
+
 public class Productor extends UnicastRemoteObject{
     static String miNombre;
 
