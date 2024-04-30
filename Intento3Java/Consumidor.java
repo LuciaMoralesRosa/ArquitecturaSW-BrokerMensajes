@@ -3,6 +3,14 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
 
+/*******************************************************************************
+ * Autores: Lizer Bernad Ferrando, 779035
+ * Lucia Morales Rosa, 816906
+ * 
+ * Fichero: Comsumidor.java
+ * Comentarios: Es el fichero correspondiente a la función implementación del consumidor.
+ ******************************************************************************/
+
 public class Consumidor extends UnicastRemoteObject {
 
 	static Callback moduloCallback;
