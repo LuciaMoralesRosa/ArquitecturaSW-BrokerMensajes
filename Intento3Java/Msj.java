@@ -1,3 +1,10 @@
+/*******************************************************************************
+ * Autores: Lizer Bernad Ferrando, 779035
+ * Lucia Morales Rosa, 816906
+ * 
+ * Fichero: Msj.java
+ * Comentarios: Implementa el objeto Msj. ******************************************************************************/
+
 /**
  * Clase que representa un mensaje en el sistema MOM (Message Oriented Middleware).
  */
