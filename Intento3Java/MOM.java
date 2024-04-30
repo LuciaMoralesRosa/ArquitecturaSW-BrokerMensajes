@@ -16,13 +16,17 @@ import java.util.TimerTask;
  */
 public class MOM extends UnicastRemoteObject implements MOMInterface {
 
+ // Atributos privados de la clase
+
 	// Definicion de la constante cincoMinutos con el valor de 5' en segundos.
 	private final int cincoMinutos = 300000;
 	private Time tiempo;
 
-	// Atributos privados de la clase
+ // Mapa que almacena las colas junto a su respectivo nombre
 	private static Map<String, Queue<Msj>> listaColas;
+ // Mapa que almacena a los invocadores con su respectiva cola declarada
 	private static Map<String, String> listaInvocadores;
+ // Mapa que almacena el nombre de las colas y una lista con sus respectivos consumidores 
 	private static Map<String, Queue<ObjConsumidor>> listaConsumidoresCola;
 
 	MOM() throws RemoteException {
