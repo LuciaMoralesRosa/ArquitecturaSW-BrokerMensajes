@@ -33,14 +33,14 @@ public class Consumidor extends UnicastRemoteObject {
 		moduloCallback = new Callback();
 	}
 	
-	// Metodos privados de la clase
-	/**
-	 * Muestra las opciones de instrucciones disponibles y espera la elección del
-	 * usuario.
-	 * 
-	 * @param scanner Scanner para leer la entrada del usuario.
-	 * @return Cadena que representa la opción elegida por el usuario.
-	 */
+	// Métodos privados de la clase
+
+    /**
+     * Muestra las opciones de instrucciones disponibles y espera la elección del usuario.
+     *
+     * @param scanner Scanner para leer la entrada del usuario.
+     * @return Cadena que representa la opción elegida por el usuario.
+     */
 	private static String intruccionAEjecutar(Scanner scanner) {
 		System.out.println("Escriba el numero de la instruccion que desea realizar: \n" +
 				"1. Declarar una cola\n" +
