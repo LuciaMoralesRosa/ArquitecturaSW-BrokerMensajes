@@ -48,22 +48,38 @@ public class Consumidor extends UnicastRemoteObject {
 		return scanner.nextLine();
 	}
 
-	private static void declararCola(Scanner scanner, MOMInterface mom) throws RemoteException {
+	/**
+ * Declara una cola en el servidor MOM.
+ *
+ * @param scanner Scanner para leer la entrada del usuario.
+ * @param mom Interfaz del servidor MOM para realizar la declaración de la cola.
+ * @throws RemoteException Si ocurre un error durante la comunicación remota.
+ */
+private static void declararCola(Scanner scanner, MOMInterface mom) throws RemoteException {
 
-		System.out.println("Escriba el nombre de la cola que quiere declarar:  ");
-		String nombreCola = scanner.nextLine();
-		mom.declararCola(nombreCola, miNombre);
-		System.out.println("[+] Se ha declarado la cola\n");
-	}
+    System.out.println("Escriba el nombre de la cola que quiere declarar:  ");
+    String nombreCola = scanner.nextLine();
+    mom.declararCola(nombreCola, miNombre);
+    System.out.println("[+] Se ha declarado la cola\n");
+}
 
-	private static void consumir(Scanner scanner, MOMInterface mom) throws RemoteException{
-		System.out.println("Escriba el nombre de la cola que quiere consumir:  ");
-		String nombreCola = scanner.nextLine();
-		mom.consumir(miNombre, moduloCallback, nombreCola);
-		System.out.println("[+] Se esta consumiendo la cola " + nombreCola + "\n");
-	}
+/**
+ * Consumir mensajes de una cola específica en el servidor MOM.
+ *
+ * @param scanner Scanner para leer la entrada del usuario.
+ * @param mom Interfaz del servidor MOM para consumir mensajes de la cola.
+ * @throws RemoteException Si ocurre un error durante la comunicación remota.
+ */
+private static void consumir(Scanner scanner, MOMInterface mom) throws RemoteException {
+    System.out.println("Escriba el nombre de la cola que quiere consumir:  ");
+    String nombreCola = scanner.nextLine();
+    mom.consumir(miNombre, moduloCallback, nombreCola);
+    System.out.println("[+] Se esta consumiendo la cola " + nombreCola + "\n");
+}
 
-
+/** 
+ * Función principal de Consumidor
+ */
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
 		String nombreConsumidor = "/MiConsumidor7781";
