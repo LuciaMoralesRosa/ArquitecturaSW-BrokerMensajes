@@ -40,13 +40,13 @@ public class Productor extends UnicastRemoteObject{
 		return scanner.nextLine();
 	}
 
-/**
- * Método para declarar una cola en el sistema MOM.
- *
- * @param scanner Scanner para leer la entrada del usuario.
- * @param mom     Interfaz del sistema MOM.
- * @throws RemoteException Si ocurre un error de red.
- */
+	/**
+	 * Método para declarar una cola en el sistema MOM.
+	 *
+	 * @param scanner Scanner para leer la entrada del usuario.
+	 * @param mom     Interfaz del sistema MOM.
+	 * @throws RemoteException Si ocurre un error de red.
+	 */
     private static void declararCola(Scanner scanner, MOMInterface mom) throws RemoteException {
         System.out.println("Escriba el nombre de la cola que quiere declarar:  ");
         String nombreCola = scanner.nextLine();
@@ -54,13 +54,13 @@ public class Productor extends UnicastRemoteObject{
         System.out.println("[+] Se ha declarado la cola\n");
     }
 
-/**
- * Método para publicar un mensaje en una cola del sistema MOM.
- *
- * @param scanner Scanner para leer la entrada del usuario.
- * @param mom     Interfaz del sistema MOM.
- * @throws RemoteException Si ocurre un error de red.
- */
+	/**
+	 * Método para publicar un mensaje en una cola del sistema MOM.
+	 *
+	 * @param scanner Scanner para leer la entrada del usuario.
+	 * @param mom     Interfaz del sistema MOM.
+	 * @throws RemoteException Si ocurre un error de red.
+	 */
     private static void publicar(Scanner scanner, MOMInterface mom) throws RemoteException {
 
         System.out.println("Escriba el nombre de la cola en la que quiere publicar:  ");
@@ -76,9 +76,9 @@ public class Productor extends UnicastRemoteObject{
         System.out.println("[+] Se ha enviado el mensaje a la cola\n");
     }
 
-/** 
- * Metodo principal de la clase Productor
- */
+	/** 
+	 * Metodo principal de la clase Productor
+	 */
     public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
 		String nombreProductor = "/MiProductor7781";
@@ -126,7 +126,6 @@ public class Productor extends UnicastRemoteObject{
 					case "1":
 						declararCola(scanner, mom);
 						break;
-
 					case "2":
 						publicar(scanner, mom);
 						break;
@@ -134,11 +133,8 @@ public class Productor extends UnicastRemoteObject{
 						break;
 				}
 			}
-
 		} catch (Exception ex) {
 			System.out.println(ex);
 		}
-
 	}
-
 }

@@ -24,24 +24,24 @@ import java.util.TimerTask;
  */
 public class MOM extends UnicastRemoteObject implements MOMInterface {
 
- // Atributos privados de la clase
+ 	// Atributos privados de la clase
 
 	// Definicion de la constante cincoMinutos con el valor de 5' en segundos.
 	private final int cincoMinutos = 300000;
 	private Time tiempo;
 
- // Mapa que almacena las colas junto a su respectivo nombre
+ 	// Mapa que almacena las colas junto a su respectivo nombre
 	private static Map<String, Queue<Msj>> listaColas;
- // Mapa que almacena a los invocadores con su respectiva cola declarada
+ 	// Mapa que almacena a los invocadores con su respectiva cola declarada
 	private static Map<String, String> listaInvocadores;
- // Mapa que almacena el nombre de las colas y una lista con sus respectivos consumidores 
+ 	// Mapa que almacena el nombre de las colas y una lista con sus respectivos consumidores 
 	private static Map<String, Queue<ObjConsumidor>> listaConsumidoresCola;
 
-/**
- * Constructor de la clase MOM.
- *
- * @throws RemoteException Si ocurre un error durante la inicialización remota.
- */
+	/**
+	 * Constructor de la clase MOM.
+	 *
+	 * @throws RemoteException Si ocurre un error durante la inicialización remota.
+	 */
 	MOM() throws RemoteException {
 		listaColas = new HashMap<String, Queue<Msj>>();
 		listaInvocadores = new HashMap<String, String>();
@@ -59,11 +59,11 @@ public class MOM extends UnicastRemoteObject implements MOMInterface {
 
 	// Metodos privados de la clase
 
-/**
- * Ordena los mensajes en una cola según su prioridad.
- *
- * @param cola La cola de mensajes a ordenar.
- */
+	/**
+	 * Ordena los mensajes en una cola según su prioridad.
+	 *
+	 * @param cola La cola de mensajes a ordenar.
+	 */
 	private void ordenarColaMensajes(Queue<Msj> cola) {
 		// Construimos la cola auxiliar
 		Queue<Msj> colaAuxiliar = new LinkedList<Msj>();
@@ -86,9 +86,9 @@ public class MOM extends UnicastRemoteObject implements MOMInterface {
 		cola = colaAuxiliar;
 	}
 
-/**
- * Elimina mensajes caducados de todas las colas.
- */
+	/**
+	 * Elimina mensajes caducados de todas las colas.
+	 */
 	private void eliminarCaducadas() {
 		// Comprobamos que la lista de colas no esta vacia
 		if (!listaColas.isEmpty()) {
@@ -110,35 +110,35 @@ public class MOM extends UnicastRemoteObject implements MOMInterface {
 		}
 	}
 
-/**
- * Verifica si una cola existe en el sistema MOM.
- *
- * @param nombreCola Nombre de la cola a verificar.
- * @return true si la cola existe, false en caso contrario.
- */
+	/**
+	 * Verifica si una cola existe en el sistema MOM.
+	 *
+	 * @param nombreCola Nombre de la cola a verificar.
+	 * @return true si la cola existe, false en caso contrario.
+	 */
 	private Boolean laColaExiste(String nombreCola) {
 		Set<String> colasExistentes = listaColas.keySet();
 		return colasExistentes.contains(nombreCola);
 	}
 
-/**
- * Verifica si un invocador existe en el sistema MOM.
- *
- * @param nombreInvocador Nombre del invocador a verificar.
- * @return true si el invocador existe, false en caso contrario.
- */
+	/**
+	 * Verifica si un invocador existe en el sistema MOM.
+	 *
+	 * @param nombreInvocador Nombre del invocador a verificar.
+	 * @return true si el invocador existe, false en caso contrario.
+	 */
 	private Boolean elInvocadorExiste(String nombreInvocador) {
 		Set<String> invocadoresExistentes = listaInvocadores.keySet();
 		return invocadoresExistentes.contains(nombreInvocador);
 	}
 
 	/*
- * Comprueba si un invocador ha declarado una cola específica.
- *
- * @param nombrePublicador Nombre del invocador.
- * @param nombreCola Nombre de la cola a verificar.
- * @return true si el invocador ha declarado la cola, false en caso contrario.
- */
+	 * Comprueba si un invocador ha declarado una cola específica.
+	 *
+	 * @param nombrePublicador Nombre del invocador.
+	 * @param nombreCola Nombre de la cola a verificar.
+	 * @return true si el invocador ha declarado la cola, false en caso contrario.
+	 */
 	private Boolean elInvocadorHaDeclaradoLaCola(String nombrePublicador, String nombreCola) {
 		Boolean res = false;
 		Boolean invocadorExistente = elInvocadorExiste(nombrePublicador);
@@ -149,13 +149,13 @@ public class MOM extends UnicastRemoteObject implements MOMInterface {
 		return res;
 	}
 
-/**
- * Verifica si un consumidor está en la cola de consumidores de una cola específica.
- *
- * @param consumidores Cola de consumidores.
- * @param nombreConsumidor Nombre del consumidor a verificar.
- * @return true si el consumidor está en la cola, false en caso contrario.
- */
+	/**
+	 * Verifica si un consumidor está en la cola de consumidores de una cola específica.
+	 *
+	 * @param consumidores Cola de consumidores.
+	 * @param nombreConsumidor Nombre del consumidor a verificar.
+	 * @return true si el consumidor está en la cola, false en caso contrario.
+	 */
 	private Boolean consumidorEnCola(Queue<ObjConsumidor> consumidores, String nombreConsumidor) {
 		for (ObjConsumidor consumidor : consumidores) {
 			if (consumidor.getNombreConsumidor().equals(nombreConsumidor)) {
@@ -165,9 +165,9 @@ public class MOM extends UnicastRemoteObject implements MOMInterface {
 		return false;
 	}
 
-/**
- * Contenido del bucle principal del servidor MOM que envía mensajes a los consumidores.
- */
+	/**
+	 * Contenido del bucle principal del servidor MOM que envía mensajes a los consumidores.
+	 */
 	public synchronized void contenidoDelWhile() {
 		for (Entry<String, Queue<Msj>> entrada : listaColas.entrySet()) {
 			// Comprobar si la cola esta vacia
@@ -185,13 +185,13 @@ public class MOM extends UnicastRemoteObject implements MOMInterface {
 	}
 
 	// Metodos publicos de la clase
-/**
- * Método para declarar una cola.
- *
- * @param nombreCola  Nombre de la cola a declarar.
- * @param invocador    Nombre del invocador que declara la cola.
- * @throws RemoteException Si ocurre un error de red.
- */
+	/**
+	 * Método para declarar una cola.
+	 *
+	 * @param nombreCola  Nombre de la cola a declarar.
+	 * @param invocador    Nombre del invocador que declara la cola.
+	 * @throws RemoteException Si ocurre un error de red.
+	 */
 	@Override
 	public synchronized void declararCola(String nombreCola, String invocador) throws RemoteException {
 		// Comprobamos si el invocador ya ha declarado una cola previamente
@@ -214,15 +214,15 @@ public class MOM extends UnicastRemoteObject implements MOMInterface {
 		}
 	}
 
-/**
- * Método para publicar un mensaje en una cola.
- *
- * @param nombrePublicador Nombre del publicador del mensaje.
- * @param nombreCola       Nombre de la cola donde se publica el mensaje.
- * @param mensaje          Mensaje a publicar.
- * @param prioridad        Prioridad del mensaje.
- * @throws RemoteException Si ocurre un error de red.
- */
+	/**
+	 * Método para publicar un mensaje en una cola.
+	 *
+	 * @param nombrePublicador Nombre del publicador del mensaje.
+	 * @param nombreCola       Nombre de la cola donde se publica el mensaje.
+	 * @param mensaje          Mensaje a publicar.
+	 * @param prioridad        Prioridad del mensaje.
+	 * @throws RemoteException Si ocurre un error de red.
+	 */
 	@Override
 	public synchronized void publicar(String nombrePublicador, String nombreCola, String mensaje, Integer prioridad)
 			throws RemoteException {
@@ -249,14 +249,14 @@ public class MOM extends UnicastRemoteObject implements MOMInterface {
 		}
 	}
 
-/**
- * Método para consumir mensajes de una cola.
- *
- * @param nombreConsumidor Nombre del consumidor.
- * @param metodoCallback   Callback que se ejecutará al recibir un mensaje.
- * @param nombreCola       Nombre de la cola de la que se consumen los mensajes.
- * @throws RemoteException Si ocurre un error de red.
- */
+	/**
+	 * Método para consumir mensajes de una cola.
+	 *
+	 * @param nombreConsumidor Nombre del consumidor.
+	 * @param metodoCallback   Callback que se ejecutará al recibir un mensaje.
+	 * @param nombreCola       Nombre de la cola de la que se consumen los mensajes.
+	 * @throws RemoteException Si ocurre un error de red.
+	 */
 	@Override
 	public synchronized void consumir(String nombreConsumidor, Callback metodoCallback, String nombreCola) throws RemoteException {
 		// Comprobar si existe la cola con el nombre dado
@@ -298,57 +298,4 @@ public class MOM extends UnicastRemoteObject implements MOMInterface {
 			}
 		}
 	}
-
-	/*public static void main(String[] args) {
-		Set<Entry<String, Queue<Msj>>> setListaColas;
-
-		Scanner scanner = new Scanner(System.in);
-		// Fijar el directorio donde se encuentra el java.policy
-		// El segundo argumento es la ruta al java.policy
-		System.setProperty("java.security.policy", "./java.policy");
-
-		// Crear administrador de seguridad
-		System.setSecurityManager(new SecurityManager());
-
-		try {
-			String host = "155.210.154.";
-			System.out.println("Complete su IP 155.210.154.XXX:xxxxx: ");
-			// host = host + scanner.nextLine();
-			host = host + "196:32008";
-
-			System.out.println("Aqui");
-			MOM objeto = new MOM();
-			System.out.println("Aqui");
-			Naming.rebind("//" + host + "/MiMOM_7781", objeto);
-			System.out.println("Aqui");
-			System.out.println("[+] Se ha registrado el objeto remoto");
-
-		} catch (Exception ex) {
-			System.out.println(ex);
-		}
-
-		while (true) {
-			setListaColas = listaColas.entrySet();
-			for (Entry<String, Queue<Msj>> entrada : setListaColas) {
-				String nombreCola = entrada.getKey();
-				Queue<Msj> colaDeMensajas = entrada.getValue();
-
-				if (!colaDeMensajas.isEmpty()) {
-					// Obtener primer consumidor de la cola "nombreCola"
-					Queue<ObjConsumidor> listaConsumidores = listaConsumidoresCola.get(nombreCola);
-					ObjConsumidor primerConsumidor = listaConsumidores.poll();
-					// Devolvemos el consumidor a la cola en la ultima posicion
-					listaConsumidores.add(primerConsumidor);
-
-					// Obtener mensaje a enviar y borrarlo de la cola
-					Msj msj = colaDeMensajas.poll();
-					String mensajeAEnviar = msj.getMensaje();
-
-					// Enviar el mensaje
-					primerConsumidor.metodoCallback.ejecutarMsj(mensajeAEnviar);
-				}
-			}
-		}
-	}*/
-
 }
