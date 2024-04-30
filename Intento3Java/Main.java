@@ -1,5 +1,13 @@
 import java.rmi.Naming;
 
+/*******************************************************************************
+ * Autores: Lizer Bernad Ferrando, 779035
+ * Lucia Morales Rosa, 816906
+ * 
+ * Fichero: Main.java
+ * Comentarios: Es el fichero correspondiente a la implementación clase Main del MOM.
+ ******************************************************************************/
+
 public class Main {
     public static void main(String[] args) {
 		// Fijar el directorio donde se encuentra el java.policy
