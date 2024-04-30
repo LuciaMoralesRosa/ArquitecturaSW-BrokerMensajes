@@ -10,6 +10,14 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/*******************************************************************************
+ * Autores: Lizer Bernad Ferrando, 779035
+ * Lucia Morales Rosa, 816906
+ * 
+ * Fichero: MOM.java
+ * Comentarios: Es el fichero correspondiente a la implementación de la interfaz MOMInterfaz.
+ ******************************************************************************/
+
 /**
  * Clase que implementa el servidor MOM (Message Oriented Middleware).
  * Extiende UnicastRemoteObject e implementa la interfaz MOMInterface para permitir la comunicación remota.
