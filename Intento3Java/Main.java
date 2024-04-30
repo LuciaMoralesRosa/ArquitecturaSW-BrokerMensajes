@@ -8,6 +8,9 @@ import java.rmi.Naming;
  * Comentarios: Es el fichero correspondiente a la implementación clase Main del MOM.
  ******************************************************************************/
 
+/**
+ * Clase principal que inicia el servidor de la aplicación MOM (Message Oriented Middleware).
+ */
 public class Main {
     public static void main(String[] args) {
 		// Fijar el directorio donde se encuentra el java.policy
