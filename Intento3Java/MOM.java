@@ -51,6 +51,11 @@ public class MOM extends UnicastRemoteObject implements MOMInterface {
 
 	// Metodos privados de la clase
 
+/**
+ * Ordena los mensajes en una cola según su prioridad.
+ *
+ * @param cola La cola de mensajes a ordenar.
+ */
 	private void ordenarColaMensajes(Queue<Msj> cola) {
 		// Construimos la cola auxiliar
 		Queue<Msj> colaAuxiliar = new LinkedList<Msj>();
@@ -73,6 +78,9 @@ public class MOM extends UnicastRemoteObject implements MOMInterface {
 		cola = colaAuxiliar;
 	}
 
+/**
+ * Elimina mensajes caducados de todas las colas.
+ */
 	private void eliminarCaducadas() {
 		// Comprobamos que la lista de colas no esta vacia
 		if (!listaColas.isEmpty()) {
@@ -94,19 +102,35 @@ public class MOM extends UnicastRemoteObject implements MOMInterface {
 		}
 	}
 
+/**
+ * Verifica si una cola existe en el sistema MOM.
+ *
+ * @param nombreCola Nombre de la cola a verificar.
+ * @return true si la cola existe, false en caso contrario.
+ */
 	private Boolean laColaExiste(String nombreCola) {
 		Set<String> colasExistentes = listaColas.keySet();
 		return colasExistentes.contains(nombreCola);
 	}
 
+/**
+ * Verifica si un invocador existe en el sistema MOM.
+ *
+ * @param nombreInvocador Nombre del invocador a verificar.
+ * @return true si el invocador existe, false en caso contrario.
+ */
 	private Boolean elInvocadorExiste(String nombreInvocador) {
 		Set<String> invocadoresExistentes = listaInvocadores.keySet();
 		return invocadoresExistentes.contains(nombreInvocador);
 	}
 
 	/*
-	 * Comprueba que el invocador existe y ha declarado la cola dada
-	 */
+ * Comprueba si un invocador ha declarado una cola específica.
+ *
+ * @param nombrePublicador Nombre del invocador.
+ * @param nombreCola Nombre de la cola a verificar.
+ * @return true si el invocador ha declarado la cola, false en caso contrario.
+ */
 	private Boolean elInvocadorHaDeclaradoLaCola(String nombrePublicador, String nombreCola) {
 		Boolean res = false;
 		Boolean invocadorExistente = elInvocadorExiste(nombrePublicador);
@@ -117,6 +141,13 @@ public class MOM extends UnicastRemoteObject implements MOMInterface {
 		return res;
 	}
 
+/**
+ * Verifica si un consumidor está en la cola de consumidores de una cola específica.
+ *
+ * @param consumidores Cola de consumidores.
+ * @param nombreConsumidor Nombre del consumidor a verificar.
+ * @return true si el consumidor está en la cola, false en caso contrario.
+ */
 	private Boolean consumidorEnCola(Queue<ObjConsumidor> consumidores, String nombreConsumidor) {
 		for (ObjConsumidor consumidor : consumidores) {
 			if (consumidor.getNombreConsumidor().equals(nombreConsumidor)) {
@@ -126,6 +157,9 @@ public class MOM extends UnicastRemoteObject implements MOMInterface {
 		return false;
 	}
 
+/**
+ * Contenido del bucle principal del servidor MOM que envía mensajes a los consumidores.
+ */
 	public synchronized void contenidoDelWhile() {
 		for (Entry<String, Queue<Msj>> entrada : listaColas.entrySet()) {
 			// Comprobar si la cola esta vacia
