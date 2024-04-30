@@ -16,6 +16,11 @@ import java.util.Scanner;
 public class Productor extends UnicastRemoteObject{
     static String miNombre;
 
+/**
+     * Constructor protegido de la clase Productor.
+     *
+     * @throws RemoteException Si ocurre un error de red.
+     */
     protected Productor() throws RemoteException {
         super();
     }
