@@ -11,11 +11,23 @@ import java.util.Scanner;
  * Comentarios: Es el fichero correspondiente a la función implementación del consumidor.
  ******************************************************************************/
 
+/**
+ * Clase que representa un Consumidor en un sistema de mensajería.
+ * Extiende UnicastRemoteObject para permitir la comunicación remota.
+ */
 public class Consumidor extends UnicastRemoteObject {
 
+ // Callback utilizado por el consumidor
 	static Callback moduloCallback;
+ // Nombre del consumidor
 	static String miNombre;
 
+/**
+     * Constructor de la clase Consumidor.
+     * Inicializa el Callback y llama al constructor de UnicastRemoteObject.
+     *
+     * @throws RemoteException Si ocurre un error durante la inicialización remota.
+     */
 	public Consumidor() throws RemoteException {
 		super();
 		moduloCallback = new Callback();
