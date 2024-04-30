@@ -29,6 +29,11 @@ public class MOM extends UnicastRemoteObject implements MOMInterface {
  // Mapa que almacena el nombre de las colas y una lista con sus respectivos consumidores 
 	private static Map<String, Queue<ObjConsumidor>> listaConsumidoresCola;
 
+/**
+ * Constructor de la clase MOM.
+ *
+ * @throws RemoteException Si ocurre un error durante la inicialización remota.
+ */
 	MOM() throws RemoteException {
 		listaColas = new HashMap<String, Queue<Msj>>();
 		listaInvocadores = new HashMap<String, String>();
