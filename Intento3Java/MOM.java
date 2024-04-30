@@ -10,6 +10,10 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * Clase que implementa el servidor MOM (Message Oriented Middleware).
+ * Extiende UnicastRemoteObject e implementa la interfaz MOMInterface para permitir la comunicación remota.
+ */
 public class MOM extends UnicastRemoteObject implements MOMInterface {
 
 	// Definicion de la constante cincoMinutos con el valor de 5' en segundos.
