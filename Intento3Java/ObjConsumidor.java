@@ -1,3 +1,9 @@
+/*******************************************************************************
+ * Autores: Lizer Bernad Ferrando, 779035
+ * Lucia Morales Rosa, 816906
+ * 
+ * Fichero: ObjComsumidor.java
+ * Comentarios: Implementa el objeto ObjComsumidor. ******************************************************************************/
 public class ObjConsumidor {
 	String nombreConsumidor;
 	Callback metodoCallback;
