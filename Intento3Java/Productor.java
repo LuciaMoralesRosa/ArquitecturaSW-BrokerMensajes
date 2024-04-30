@@ -10,6 +10,9 @@ import java.util.Scanner;
  * Fichero: Productor.java
  * Comentarios: Implementa el productor. ******************************************************************************/
 
+/** 
+ * Clase que representa un consumidor en el sistema MOM
+*/
 public class Productor extends UnicastRemoteObject{
     static String miNombre;
 
